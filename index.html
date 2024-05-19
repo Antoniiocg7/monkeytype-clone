@@ -72,6 +72,14 @@
         }
     }
 
+    x-word {
+        border-bottom: 2px solid transparent;
+        transition: border-color 0.3s ease-in-out;
+        &.marked {
+            border-color: var(--red);
+        }
+    }
+
     @keyframes blink {
         0%, 25% {
             opacity: 1;
@@ -161,13 +169,19 @@
             const $nextWord = $currentWord.nextElementSibling
             const $nextLetter = $nextWord.querySelector("x-letter")
 
-            $currentWord.classList.remove("active")
+            $currentWord.classList.remove("active", "marked")
             $currentLetter.classList.remove("active")
 
             $nextWord.classList.add("active")
             $nextLetter.classList.add("active")
 
             $input.value = ""
+
+            const hasMissedLetters = $currentWord
+                .querySelectorAll("x-letter:not(.correct)").length > 0
+
+            const classToAdd = hasMissedLetters ? 'marked' : 'correct'
+            $currentWord.classList.add(classToAdd)
         }
     }
 
